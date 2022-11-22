@@ -1,0 +1,26 @@
+#Casey Nguyen
+#10/6/2020
+#high.ac
+#PURPOSE: Program finds the highest positive value out of a set
+#of user-inputted values. User enters non-negative numbers they
+#satisfied (denoted by the first negative number in the
+#sequence). Following the satisifed condition, the user will get
+#output that displays the highest entered positive value.
+
+lli r1 0 #r1 is the highest value
+lli r2 0 #r2 is the current input
+
+GET_HIGH: in r2 #collect current user input
+lli r3 0 #filler value for comparisons
+sub r3 r2 r1 #r3 = input - highest
+bez r3 &GET_HIGH #r3 == 0; keep asking for input
+bgz r3 &IN_HIGH #r3 > 0; input was greater than highest
+bez r2 &GET_HIGH #if input is equal to 0, continue
+bgz r2 &GET_HIGH #if input is greater than 0, also continue
+bez r0 &END_IN #otherwise, input is negative and we conclude
+
+IN_HIGH: addi r1 r2 0 #input becomes the new highest value
+bez r0 &GET_HIGH #sends user back to the loop
+
+END_IN: out r1 #output the highest inpuuted value
+.halt #end program

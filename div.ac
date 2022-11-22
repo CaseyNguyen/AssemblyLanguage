@@ -1,0 +1,37 @@
+#Casey Nguyen
+#10/6/20
+#div.ac
+#PURPOSE: Program processes division, taking a dividend then a
+#divisor and producing a quotient and remainder. Value for
+#dividend must be non-negative; value for divisor must be
+#positive (program will take steps to ensure these conditions
+#are fulfilled).
+
+lli r1 0 #dividend
+lli r2 0 #divisor
+lli r3 0 #quotient
+
+CHECK_POS1: in r1 #loop to prevent negative values
+lli r4 0 #initialize the comparison variable
+sub r4 r4 r1 #r4 = 0 - input
+bgz r4 &CHECK_POS1 #if r1 is negative, re-input
+
+CHECK_POS2: in r2 #loop to prevent negative/zero values
+lli r4 0 #reset the comparison variable
+bez r2 &CHECK_POS2 #if r2 is zero, re-input
+sub r4 r4 r2 #r4 = 0 - input
+bgz r4 &CHECK_POS2 #if r2 is negative, re-input
+
+DIVIDE: lli r5 0 #placeholder dividend value
+sub r5 r1 r2 #r5 = dividend - divisor (tests if op possible)
+bez r5 &PERFORM_OP #r1 == r2; division operation possible
+bgz r5 &PERFORM_OP #r1 > r2; division operation possible
+bez r0 &END_DIVIDE #else we end the division process
+
+PERFORM_OP: addi r3 r3 1 #increment the quotient by 1
+addi r1 r5 0 #dividend becomes the placeholder dividend
+bez r0 &DIVIDE #return to the division process
+
+END_DIVIDE: out r3 #outputs the quotient
+out r1 #outputs the remainder (leftover dividend)
+.halt #ends program
